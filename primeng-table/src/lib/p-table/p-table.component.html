@@ -1,0 +1,237 @@
+<!-- =============================
+     Main Table Wrapper
+============================= -->
+<p-table 
+  #tableGrid 
+  [value]="products" 
+  [rows]="rowsPerPage" 
+  [paginator]="pagination" 
+  [globalFilterFields]="cols"
+  [tableStyle]="{ width: '100%' }" 
+  [(selection)]="selectedProducts" 
+  [columns]="selectedColumns" 
+  [rowHover]="true"
+  (onRowReorder)="handleRowReorder($event)" 
+  [scrollable]="scrollable" 
+  [scrollHeight]="scrollHeight"
+  [virtualScrollItemSize]="(isLazyLoadIsOn) ? virtualScrollItemSize : undefined"
+  [virtualScroll]="(isLazyLoadIsOn) ? virtualScroll : undefined" 
+  [dataKey]="dataKey ? dataKey : 'id'"
+  [rowsPerPageOptions]="rowsPerPageOptions" 
+  [responsive]="true" 
+  [lazy]="!clientSidePaginationAndSearch"
+  [styleClass]="(disableStickyHeader ? null : tableStyleDiv) + (products?.length === 0 ? ' no-data-table' : '')"
+  (onPage)="onSearchBoxChange($event,tableId)" 
+  [first]="first1" 
+  [totalRecords]="totalRecordss ? totalRecordss : 0"
+  [reorderableColumns]="reorderableColumns"
+  [sortField]="sortField" 
+  [sortOrder]="sortOrder"
+  (onColReorder)="onColReorder($event)"
+  (onLazyLoad)="(isLazyLoadIsOn) ? loadDataLazy($event) : ''"
+>
+
+  <!-- ==========================================================================
+       Caption (Search, Export, Filters, Column Selection, Extra Search Dropdown)
+  ========================================================================== -->
+  <ng-template pTemplate="caption" *ngIf="searchBox || exportFunction || showColumnSelection || extraSerarchDropDown">
+    <div>
+      <div class="d-flex justify-content-between w-100 padding-main-div">
+        <div class="w-100">
+          <ng-container>
+            <lib-advance-search 
+              [language]="language" 
+              [ngClass]="{'filtericonarabic':language == 'ar'}" 
+              [isAdvanced]="isAdvanced"
+              [selectedAdvanceFilter]="selectedAdvanceFilter" 
+              [advanceSearchColumns]="advanceSearchColumns"
+              (applyAdvancedSearchFilter)="applyAdvanceFilter($event,tableId)" 
+              (onFilterAdd)="onFilterApply()"
+              (onFilterRemove)="onFilterRemove()" 
+              [tableId]="tableId"
+            >
+              <div class="d-flex">
+                <div  *ngIf="extraSerarchDropDown" [ngStyle]="{'margin-right': (language == 'ar')?'0px':'10px','margin-left': (language == 'en')?'0px':'10px'}" class="d-flex align-items-center">
+                  <div style="width: 8rem;"
+                    [ngStyle]="{'margin-right': (language == 'en')?'10px':'','margin-left': (language == 'ar')?'10px':''}">
+                    <p-dropdown 
+                      [options]="extraSerarchDropDownList" 
+                      [(ngModel)]="selectedSearchColumn"
+                      optionLabel="text" 
+                      optionValue="textEn"
+                      [showClear]="false"
+                      (onChange)="changeSearchDropDown($event)"
+                    ></p-dropdown>
+                  </div>
+                </div>
+                <div  *ngIf="showColumnSelection" [ngStyle]="{'margin-right': (language == 'ar')?'0px':'10px','margin-left': (language == 'en')?'0px':'10px'}" class="d-flex align-items-center">
+                  <i class="pi pi-table" style="cursor: pointer; font-size: 20px; margin-top: 5px;" (click)="columnSelection.toggle($event)"></i>
+                  <p-overlayPanel #columnSelection>
+                    <p-listbox [options]="advanceSearchColumns" [filter]="true" [(ngModel)]="selectedColumns"
+                      [style]="{ width: '15rem' }" [ngClass]="{'araibc-p-listbox':language == 'ar'}" (onChange)="onColumnSelectionChange($event)" optionLabel="header"
+                      selectedItemsLabel="{0} columns selected" placeholder="Choose Columns" [options]="cols"
+                      [multiple]="true" [checkbox]="true" [listStyle]="{'max-height': '220px'}">
+                      <ng-template let-col pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <div>{{ col.header | translate}}</div>
+                        </div>
+                    </ng-template>
+                    </p-listbox>
+                  </p-overlayPanel>
+                </div>
+                <div *ngIf="searchBox" class="searchBtn" style="width: 100%;">
+                  <span *ngIf="language==='ar'" class="p-input-icon-left">
+                    <i class="pi pi-search" [ngClass]="{'searchicon':language == 'ar'}"></i>
+                    <input #seachInputText pInputText type="search" [(ngModel)]="globalFilterValue"
+                      (keydown.enter)="(clientSidePaginationAndSearch)?tableGrid.filterGlobal(seachInputText.value, 'contains'):onSearchBoxChange(seachInputText.value,tableId)"
+                      [placeholder]="(searchLabel)?(searchLabel | translate):('Search...' | translate)"
+                      class="custom-placeholder-input"
+                      (input)="(seachInputText.value == '')?((clientSidePaginationAndSearch)?tableGrid.filterGlobal(seachInputText.value, 'contains'):onSearchBoxChange(seachInputText.value,tableId)):''" />
+                  </span>
+                  <span *ngIf="language==='en'" class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input #seachInputText pInputText type="search" [(ngModel)]="globalFilterValue"
+                      (keydown.enter)="(clientSidePaginationAndSearch)?tableGrid.filterGlobal(seachInputText.value, 'contains'):onSearchBoxChange(seachInputText.value,tableId)"
+                      [placeholder]="(searchLabel)?(searchLabel):'Search...'"
+                      (input)="(seachInputText.value == '')?((clientSidePaginationAndSearch)?tableGrid.filterGlobal(seachInputText.value, 'contains'):onSearchBoxChange(seachInputText.value,tableId)):''" />
+                  </span>
+                </div>
+                <div  *ngIf="exportFunction" [ngStyle]="{'margin-left': (language == 'ar')?'0px':'10px','margin-right': (language == 'en')?'0px':'10px'}" class="d-flex align-items-center">
+                  <i 
+                    class="fa fa-file-pdf-o custom-icon me-2"
+                    (click)="exportPdf()"
+                    [title]="'Export to PDF' | translate"
+                    style="color: #f34e4e"
+                    aria-hidden="true"
+                  ></i>
+                  <i 
+                    class="fa fa-file-excel-o custom-icon"
+                    [title]="'Export to Excel' | translate"
+                    (click)="exportExcel()"
+                    style="color: #4baa76"
+                    aria-hidden="true"
+                  ></i>
+              </div>
+              </div>
+            </lib-advance-search>
+          </ng-container>
+        </div>
+        
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- =============================
+       Table Header
+  ============================= -->
+  <ng-template pTemplate="header" let-columns>
+    <tr [ngClass]="{'text-align-right': language === 'ar', 'text-align-left': language !== 'ar'}">
+      <th style="width: 2%;" *ngIf="reorderableRow"></th>
+      <ng-container *ngFor="let col of columns">
+        <ng-container *ngIf="col.sort">
+          <th class="table-header" [pSortableColumn]="col.field" [ngStyle]="col.style" [ngClass]="col.class"
+            (click)="onHeaderClick(col)" alignFrozen="right" pFrozenColumn [frozen]="col.frozen" pReorderableColumn>
+            {{col.header |translate}} <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </ng-container>
+        <ng-container *ngIf="!col.sort">
+          <th class="table-header" [ngStyle]="col.style" [ngClass]="col.class" alignFrozen="right" pFrozenColumn [frozen]="col.frozen" pReorderableColumn>
+            <span *ngIf="col.header?.toLowerCase() != 'select'">{{ col.header | translate}}</span>
+            <span *ngIf="col.header?.toLowerCase() == 'select'">
+              <p-tableHeaderCheckbox (click)="onSelection($event)"></p-tableHeaderCheckbox>
+            </span>
+          </th>
+        </ng-container>
+      </ng-container>
+    </tr>
+  </ng-template>
+
+  <!-- =============================
+       Table Body
+  ============================= -->
+  <ng-template pTemplate="body" let-rowData let-columns="columns" let-index="rowIndex">
+    <tr class="t-body" [ngClass]="getRowClass(rowData)" [pReorderableRow]="reorderableRow ? index : null">
+      <td *ngIf="reorderableRow">
+        <span class="pi pi-bars" pReorderableRowHandle></span>
+      </td>
+      <td *ngFor="let col of columns; let i = index" [ngStyle]="col.style" [ngClass]="col.class" alignFrozen="right"
+        pFrozenColumn [frozen]="col.frozen">
+        <ng-container *ngIf="col.hyperLink">
+          <span style="cursor: pointer;color: blue;" (click)="editProduct(rowData, index)"><u>{{rowData[col.field]}}</u></span>
+        </ng-container>
+        <ng-container *ngIf="col.field === 'actionCol'">
+          <div style="display: flex;justify-content: center" [ngClass]="{'tabletdarabic':language == 'ar'}">
+            <div class="action-icon-border" *ngIf="col?.editACl == undefined || col?.editACl">
+              <i class="pi pi-pencil actionColumnIcon invisible-button" aria-hidden="true" (click)="editProduct(rowData, index)"></i>
+            </div>
+            <div class="action-icon-border" [ngClass]="{'me-1': language == 'ar','ms-1': language == 'en' }" *ngIf="col?.deleteACL == undefined || col?.deleteACL">
+              <i class="pi pi-trash actionColumnIcon invisible-button" aria-hidden="true" (click)="deleteProduct(rowData, index)"></i>
+            </div>
+          </div>
+          <ng-container *ngIf="col.customControls && col.customControls.length > 0 && col.field == 'actionCol'">
+            <div *ngFor="let control of col.customControls">
+              <ng-container *ngTemplateOutlet="control; context: { index: i, data: rowData[col.field] }"></ng-container>
+            </div>
+          </ng-container>
+        </ng-container>
+        <ng-container class="elipses" *ngIf="(!col.customControls || col.customControls.length == 0) && !col.hyperLink && !containsStatus(col.field) && col.field !== 'actionCol' && col.field !== 'select'">
+          {{ rowData[col.field] }}
+        </ng-container>
+        <ng-container *ngIf="col.field != 'actionCol' && col.customControls && col.customControls.length > 0">
+          <div *ngFor="let control of col.customControls">
+            <ng-container *ngTemplateOutlet="control; context: { index: index, data: rowData }"></ng-container>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="col.field === 'select'">
+          <p-tableCheckbox [value]="rowData" [disabled]="getDisableCheckBox(rowData)" (click)="onSelection($event)"></p-tableCheckbox>
+        </ng-container>
+        <ng-container *ngIf="col.field === 'radio'">
+          <p-tableRadioButton [value]="rowData" (click)="onSelection($event)"></p-tableRadioButton>
+        </ng-container>
+        <ng-container *ngIf="containsStatus(col.field)">
+          <ng-container *ngIf="statusConfigs && statusConfigs[rowData[col.field]]">
+            <h4><span class="badge {{statusConfigs[rowData[col.field]]}}">
+              <b>{{rowData[col.field] | translate}}</b>
+            </span></h4>
+          </ng-container>
+          
+          <ng-container *ngIf="(rowData[col.field] == '-' || !rowData[col.field]) || 
+                              (statusConfigs && !statusConfigs[rowData[col.field]])">
+            -
+          </ng-container>
+        </ng-container>
+      </td>
+    </tr>
+  </ng-template>
+
+
+  <!-- =============================
+       Summary
+  ============================= -->
+  <ng-template pTemplate="summary" *ngIf="summary">
+    <div class="flex align-items-center justify-content-between" [ngStyle]="{'text-align': (language == 'ar')?'right':'left'}">
+      {{"In total there are" | translate}} {{ totalRecordss }} {{"records." | translate}}
+    </div>
+  </ng-template>
+
+
+  <!-- =============================
+       Loading Body
+  ============================= -->
+  <ng-template pTemplate="loadingbody" let-columns="columns">
+    <tr style="height:46px">
+      <td *ngFor="let col of columns; let even = even">
+        <p-skeleton [ngStyle]="{'width': even ? (col.field === 'year' ? '30%' : '40%') : '60%'}" />
+      </td>
+    </tr>
+  </ng-template>
+
+  <!-- =============================
+       Empty Message
+  ============================= -->
+  <ng-template pTemplate="emptymessage" let-columns *ngIf="isLazyLoadIsOn">
+    <tr style="height: 54px;">
+      <td colspan="100%" class="text-center">{{'No Items Found.'|translate}}</td>
+    </tr>
+  </ng-template>
+</p-table>

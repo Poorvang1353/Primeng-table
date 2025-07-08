@@ -1,0 +1,204 @@
+.search-label{
+  align-items: center;
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: #f3f3f3;
+  color: #333;
+  border-radius: 16px;
+  padding: 3px 7px;
+  margin-right: 5px !important;
+  margin-left: 0px !important;
+  margin-bottom: 5px;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.arabic-search-label{
+  align-items: center;
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: #f3f3f3;
+  color: #333;
+  border-radius: 16px;
+  padding: 3px 7px;
+  margin-left: 5px !important;
+  margin-right: 0px !important;
+  margin-bottom: 5px;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.filter-icon{
+  margin-top: 0.08rem;
+}
+.filterfocus {
+  border-radius: 50% !important;
+}
+.search-chips{
+  font-size: 15px;
+  margin-left: 0.3rem !important;
+  margin-right:0rem !important;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.arabic-search-chips{
+  font-size: 15px;
+  margin-right: 0.3rem !important;
+  margin-left: 0rem !important;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.arabic-search-chips{
+  font-size: 15px;
+  margin-right: 0.3rem !important;
+  margin-left: 0rem !important;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.ptreezero ::ng-deep.p-tree{
+  border: none !important;
+  padding: 0px !important;
+}
+
+.ptreezero ::ng-deep.p-tree:hover{
+  background-color: white !important;
+}
+
+.ptreezero ::ng-deep.p-tree .p-tree-container .p-treenode {
+  font-size: small !important;
+}
+
+.ptreezero ::ng-deep.p-tree .p-tree-container .p-treenode .p-treenode-content .p-tree-toggler{
+  height: 1rem !important;
+  width: 1rem !important;
+}
+
+.ptreezero ::ng-deep.p-checkbox{
+  height: 1rem !important;
+  width: 1.2rem !important;
+  display: none;
+}
+
+.ptreezero  ::ng-deep.p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight{
+  color: inherit !important;
+}
+
+.ptreezero ::ng-deep.p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight .p-tree-toggler, .p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight .p-treenode-icon{
+  color: inherit !important;
+}
+
+::ng-deep .overlay{
+  width: 325px !important;
+}
+
+.times-style{
+  margin-top: 4px !important;
+  margin-left: 4px !important;
+  margin-right: 0px !important;
+}
+
+.arabic-times-style{
+  margin-top: 4px !important;
+  margin-right: 4px !important;
+  margin-left: 0px !important;
+}
+
+.arabic-times-style{
+  margin-top: 4px !important;
+  margin-right: 4px !important;
+  margin-left: 0px !important;
+}
+
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: calc(7 * 40px); /* 7 rows of 40px height each */
+  width: calc(4 * 15rem);
+  overflow-x: auto; 
+  gap: 2px; /* Adjust the gap as needed */
+  left: 101px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  padding: 5px;
+}
+
+.grid-item {
+  flex: 0 0 calc(15% - 70px); /* Two items per row, considering the gap */
+  margin-bottom: 4px; /* Adjust margin as needed */
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+.search-box-arabic {
+display: flex;
+justify-content: right; /* Align to right side */
+}
+
+::ng-deep .araibc-p-listbox .p-listbox-list .p-listbox-item .p-checkbox {
+  margin-left: 0.5rem !important;
+  margin-right: 0rem !important;
+}
+
+
+
+::ng-deep .p-datatable .p-datatable-header {
+  padding: 0rem !important;
+}
+
+
+::ng-deep .p-overlaypanel .p-overlaypanel-content {
+  padding: 10px !important;
+}
+
+::ng-deep p-listbox .p-listbox-list .p-listbox-item {
+  padding: 5px 10px !important;
+}
+
+::ng-deep .p-listbox .p-listbox-list {
+  padding: 5px 0px !important;
+}
+
+::ng-deep .p-listbox .p-listbox-header {
+  padding: 10px 10px !important;
+}
+
+.applyFilterBtn {
+  width: 15rem !important;
+  padding-top: 8px !important;
+  padding-right: 5px !important;
+}
+
+
+.invisible-button {
+  cursor: pointer !important;
+  padding: 5px !important;
+  font-size: larger;
+}
+
+.invisible-button:focus {
+  border-radius: 20% !important;
+  outline: none !important;
+  border: 1.8px solid lightblue !important;
+}
+
+::ng-deep .p-inputtext {
+  padding: .25rem !important;
+}
+
+::ng-deep .p-listbox .p-listbox-header .p-listbox-filter-icon {
+  right: .75rem !important;
+  color: #6c757d !important;
+}
+
+::ng-deep .p-icon{
+  width: 1rem !important;
+  height: 1rem !important;
+}

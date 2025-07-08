@@ -1,0 +1,160 @@
+<div class="d-flex">
+    <div style="width: 100%;">
+        <ng-content>
+
+        </ng-content>
+    </div>
+    <div *ngIf="isAdvanced" class="action-icon-border d-flex align-items-center" style="border-color: #ced4da;"
+        [ngStyle]="{'margin-left': (language == 'ar')?'0px':'10px','margin-right': (language == 'en')?'0px':'10px'}">
+        <i tabindex="0" class="pi pi-filter filter-icon filterfocus float-end invisible-button"
+            style="cursor: pointer; color: #006BB9;margin-right: -0.4px;" (click)="onFilterButtonClick()" #targetfl>
+
+        </i>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" style="padding-top: 5px;">
+        <span class="d-flex">
+
+            <span class="d-flex flex-wrap">
+                <ng-container *ngFor="let label of advancedSearchFilterArray; let i = index">
+                    <ng-container
+                        *ngIf="(label.filterColumn !='min' && label.filterColumn !='endDate') || (label.filterType == 'isMultipleDateFilter')">
+                        <div class="pointer" [ngClass]="(language == 'ar') ? 'arabic-search-label' : 'search-label'"
+                            (click)="onLabelClick(i, label)">
+                            <span class="d-flex align-items-center">
+                                <span>
+                                    {{label?.displayLabel}}
+                                </span>
+                                <span (click)="onRemoveClick(i,label)"
+                                    [ngClass]="(language == 'ar') ? 'arabic-search-chips' : 'search-chips'">
+                                    <i class="pi pi-times-circle"
+                                        [ngClass]="(language == 'ar') ? 'arabic-times-style' : 'times-style'"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </span>
+        </span>
+    </div>
+</div>
+
+
+
+
+<p-overlayPanel #advanceSearch>
+
+</p-overlayPanel>
+<p-sidebar [blockScroll]="true" appendTo="body" [(visible)]="isSidebarVisible"
+    [position]="(language == 'ar')?'left':'right'" styleClass="w-30rem advancedSearchSidebar">
+    <ng-template pTemplate="header">
+        <h4>{{'Filter'|translate}} </h4>
+    </ng-template>
+    <ng-template pTemplate="content">
+
+        <p-accordion [activeIndex]="activeIndexItem" [multiple]="true" styleClass="mt-1">
+            <p-accordionTab [header]="tab.displayName" (click)="accordianOpen($event, tab)"
+                *ngFor="let tab of advanceSearchColumns; let i = index">
+                <ng-container *ngIf="tab?.isDropDown">
+                    <ng-container>
+                        <p class="m-0">
+                            <p-listbox [ngClass]="{'araibc-p-listbox':language == 'ar'}" [showToggleAll]="false"
+                                [options]="tab?.dropDownItems" [multiple]="true" [filter]="!tab.isStaticDropdown"
+                                [optionLabel]="isObjectDropdown(tab.dropDownItems) ? 'text' : null" optionValue="value"
+                                [style]="{ width: '15rem'}" [checkbox]="true" [(ngModel)]="selectedDropdownItems"
+                                [listStyle]="{'max-height': '220px'}"
+                                (onChange)="OnChangeSel(tab, selectedDropdownItems)">
+                            </p-listbox>
+                        </p>
+                    </ng-container>
+                </ng-container>
+                <ng-container *ngIf="tab?.isMinMax">
+                    <div style="width: 15rem;padding-bottom: 1rem;margin-top: 2rem !important">
+                        <label [ngClass]="{'float-end': language == 'ar'}" class="mb-1"
+                            style="font-weight: 700 !important;">{{'Price Range'|translate}}</label><br>
+                        <div class="mt-2">
+                            <div style="display: flex;">
+                                <div class="col-md-5 col-sm-5 col-lg-5 px-0">
+                                    <label [ngClass]="{'float-end': language == 'ar'}"
+                                        style="font-weight: 700 !important;">{{'Min'|translate}}</label>
+                                    <input class="form-control" (keypress)="keypress($event)"
+                                        (ngModelChange)="OnChangeSel(tab, searchTextValue)" [(ngModel)]="minPrice">
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-lg-2 px-0 mt-2"
+                                    style="font-weight: 700 !important; display: flex; justify-content: center; align-items: flex-end;">
+                                    {{'To'|translate}}</div>
+                                <div class="col-md-5 col-sm-5 col-lg-5 px-0">
+                                    <label [ngClass]="{'float-end': language == 'ar'}"
+                                        style="font-weight: 700 !important;">{{'Max'|translate}}</label>
+                                    <input class="form-control" (keypress)="keypress($event)"
+                                        (ngModelChange)="OnChangeSel(tab, searchTextValue)" [(ngModel)]="maxPrice">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="tab?.isText">
+                    <div style="width: 15rem;padding-bottom: 1rem;margin-top: 2rem !important;"
+                        [ngStyle]="{'text-align': (language == 'ar')?'right':'left'}">
+                        <!-- <p-dropdown 
+                            [options]="advanceSearchColumnsValue" 
+                            [(ngModel)]="searchTextOperation"
+                            optionLabel="text" 
+                            optionValue="value"
+                            [showClear]="false"
+                            (onChange)="OnChangeSel(tab, searchTextOperation)">
+                        </p-dropdown> -->
+                        <div class="form-group mt-2">
+                            <label [ngClass]="{'float-end': language == 'ar'}">{{'Value'|translate}}</label>
+                            <input type="string" [placeholder]="'Enter Value'|translate"
+                                (ngModelChange)="OnChangeSel(tab, searchTextValue)" class="form-control"
+                                [(ngModel)]="searchTextValue" />
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="tab?.isPriceRange">
+                    <div style="width: 15rem;padding-bottom: 1rem;margin-top: 2rem !important">
+                        <label [ngClass]="{'float-end': language == 'ar'}" class="mb-1"
+                            style="font-weight: 700 !important;">{{'Price Range'|translate}}</label>
+                        <div class="col-md-12" style="display: grid; align-items: center;">
+                            <span>
+                                <p-slider [(ngModel)]="priceRangeValue"
+                                    (ngModelChange)="OnChangeSel(tab, priceRangeValue)"></p-slider>
+                            </span>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="tab?.isDateFilter">
+                    <div style="width: 15rem;padding-bottom: 1rem;margin-top: 1rem !important">
+                        <label [ngClass]="{'float-end': language == 'ar'}"
+                            style="font-weight: 700 !important;">{{'Select Dates'|translate}}</label>
+                        <p-calendar [(ngModel)]="rangeDates" appendTo="body" (onSelect)="OnChangeSel(tab, rangeDates)"
+                            selectionMode="range" [readonlyInput]="true"
+                            [placeholder]="'Select Dates Between'|translate" #calendar />
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="tab?.isMultipleDateFilter">
+                    <div style="width: 15rem;padding-bottom: 1rem;margin-top: 1rem !important">
+                        <label [ngClass]="{'float-end': language == 'ar'}"
+                            style="font-weight: 700 !important;">{{'Select Dates'|translate}}</label>
+                        <p-calendar [(ngModel)]="rangeDatesMultiple[tab?.index]" appendTo="body"
+                            (onSelect)="OnChangeSel(tab, rangeDatesMultiple)" selectionMode="range"
+                            [readonlyInput]="true" [placeholder]="'Select Dates Between'|translate" #calendar />
+                    </div>
+                </ng-container>
+            </p-accordionTab>
+        </p-accordion>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="">
+            <span class="float-end" (click)="onMainApplyClick(displayName);this.isSidebarVisible = false;" style="font-size: 14px;
+              font-weight: 500;
+              color: #1a73e8;cursor: pointer;">{{'Apply' | translate}}</span>
+            <span class="float-end me-2 mb-2" (click)="this.isSidebarVisible = false;onClearAllFilter();" style="font-size: 14px;
+              font-weight: 500;
+              color: #1a73e8;cursor: pointer;">{{'Clear' | translate}}</span>
+        </div>
+    </ng-template>
+</p-sidebar>

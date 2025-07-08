@@ -1,0 +1,239 @@
+::ng-deep .p-input-icon-left {
+  position: relative;
+  display: inline;
+  /* margin-right: 11px; */
+}
+
+.actionColumnIcon:hover {
+  cursor: pointer;
+}
+
+.action-icon-border>.pi-trash {
+  color: #d0223b;
+}
+.custom-icon {
+  font-size: 31px;
+}
+
+.ui-datatable .ui-datatable-thead>tr>th {
+  background: red;
+}
+
+
+.custom-table caption {
+  caption-side: top;
+  /* Move the table caption above the table */
+}
+
+::ng-deep.p-datatable .p-datatable-thead>tr>th {
+  background-color: #edf1f4;
+}
+
+
+.multi-select-dropdown {
+  margin-left: -13px;
+}
+
+@media screen and (max-width: 767px) {
+  
+  ::ng-deep.p-multiselect {
+    width: 144px !important;
+  }
+  ::ng-deep.p-inputtext{
+    width: 114px ;
+  }
+  .searchBtn{
+    width: 186px;
+  }
+}
+
+::ng-deep .p-datatable .p-datatable-thead > tr > th{
+  padding: 0.4rem 0.3rem !important;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr > td{
+  padding: 0.4rem 0.3rem !important;   
+} 
+
+.demo{
+  cursor: pointer;
+}
+
+:host ::ng-deep .p-dropdown-label{
+  padding-left: 1rem !important;
+  padding-top: 0.4rem !important;
+}
+
+::ng-deep .p-datatable .p-datatable-header{
+  padding: 1rem 0rem;
+}
+
+::ng-deep .p-paginator-rpp-options{
+  align-items:center !important;
+  width: 96px !important;
+  height: 40px !important;
+}
+
+::ng-deep .custom-placeholder-input::placeholder {
+  position: relative;
+  /* left: -40px; Adjust as needed */
+  top: 0%; /* Adjust as needed */
+  transform: translateY(-1%);
+}
+
+:host ::ng-deep .p-disabled {
+  background-color:white;
+  opacity: 1 !important;
+}
+
+
+:host ::ng-deep .p-input-icon-left {
+  position: relative;
+  width: 100%;
+  display: grid;
+}
+:host ::ng-deep .ng-select .ng-select-container {
+  min-height: 1.8rem !important;
+  height: 1.8rem !important;
+}
+
+::ng-deep .no-data-table {
+  height: 250px !important;
+}
+
+::ng-deep .p-datatable .p-datatable-header {
+  background: white !important;
+  border: 0px !important;
+  border-width: 0px 0 1px 0 !important;
+}
+
+::ng-deep .p-datatable .p-datatable-header {
+  padding: 0rem !important;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+  padding: 0.4rem 0.4rem !important;
+}
+
+::ng-deep .p-datatable .p-datatable-thead>tr>th {
+  padding: 0.4rem 0.4rem !important;
+}
+
+::ng-deep .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody>tr:not(.p-highlight):hover {
+  background: #edf5fa  !important;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody>tr {
+  min-height: 54px;
+  height: 54px;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody>tr:hover {
+  background: #edf5fa  !important;
+}
+
+
+.stickyTableHeader {
+  &.customStickyHeader {
+    .p-datatable-header {
+      top: 70px;
+    }
+
+    .p-datatable-wrapper {
+      .p-datatable-table {
+        .p-datatable-thead {
+          top: 117px;
+        }
+      }
+    }
+  }
+
+  .p-datatable-header {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0px;
+    z-index: 99;
+  }
+
+  .p-datatable-wrapper {
+    overflow: visible !important;
+
+    .p-datatable-table {
+      .p-datatable-thead {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        z-index: 9;
+        top: 36px;
+      }
+    }
+  }
+}
+::ng-deep .p-datatable .p-datatable-header {
+  background: white !important;
+  border: 0px !important;
+  border-width: 0px 0 1px 0 !important;
+}
+
+
+.action-icon-border>button {
+  color: #006BB9;
+}
+
+.action-icon-border>i {
+  color: #006BB9;
+}
+
+.action-icon-border-yellow>button {
+  color: #006BB9;
+}
+
+
+.action-icon-border-yellow {
+  border-radius: 20%;
+  border: 1px solid #DCDCDC;
+  background-color: rgb(254 244 164);
+  color: #006BB9;
+}
+
+.action-icon-border-disabled>i {
+  color: lightgray;
+}
+
+.action-icon-border-disabled {
+  border-radius: 20%;
+  border: 1px solid #DCDCDC;
+}
+
+.action-icon-border:focus {
+  border-radius: 20%;
+  outline: none !important;
+  border: 1.8px solid lightblue;
+}
+
+.action-icon-border {
+  border-radius: 20%;
+  border: 1px solid #DCDCDC;
+}
+
+
+.filter-icon-border {
+  border-radius: 14%;
+  border: 1px solid #ced4da;
+}
+
+
+::ng-deep .p-inputtext {
+  padding: .25rem !important;
+}
+
+.invisible-button {
+  cursor: pointer !important;
+  padding: 5px !important;
+  font-size: larger;
+}
+
+.invisible-button:focus {
+  border-radius: 20% !important;
+  outline: none !important;
+  border: 1.8px solid lightblue !important;
+}
